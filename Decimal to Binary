@@ -1,0 +1,59 @@
+package Dec2Bin;
+
+import java.util.Scanner;
+
+public class convert
+{
+	public static String converter(int n)
+	//Purpose: To convert n to its corresponding binary string representation
+	{
+		if (n==0) 
+		{
+			return ("0");
+			}
+		else if(n==1) 
+		{
+			return("1");
+			}
+		else 
+		{
+			return(converter(n/2) + n%2);
+			}
+	}
+
+public static void main(String[] args)
+{
+	Scanner reader=new Scanner(System.in);
+	System.out.print("Enter a natural number: ");
+	int n=reader.nextInt();
+	System.out.println("The natural number " + n + " in binary is " + converter(n));
+}
+}
+// At each step n is divided by 2 . 
+//There is only a finite number of times 
+//n can be divided by before it become 0 or 1.  
+//At this point the function terminates.
+package Dec2Bin;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class ConverterTests {
+
+	@Test
+	public void test() 
+	{
+		assertEquals(convert.converter(0),"0");
+		assertEquals(convert.converter(1),"1");
+		assertEquals(convert.converter(10),"1010");
+		assertEquals(convert.converter(16),"10000");
+	}
+
+}
+
+package Dec2Bin;
+
+public class loopconverter {
+
+}
