@@ -1,0 +1,78 @@
+package Addition;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+
+public class AdditionTest {
+    @Test
+    public void add_matrix_row() throws Exception {
+        int[] X = {1, 2, 3, 4};
+        int[] Y = {5, 6, 7, 8};
+        assertArrayEquals(Addition.add_matrix_row(X, Y, 0, 3),new int[]{6, 8, 10, 12});
+    }
+
+    @Test
+    public void add_matrix() throws Exception {
+        int[][] X = {{1, 2},
+        			{2, 1}};
+        int[][] Y = {{1, 0},
+        			{0, 1}};
+        assertArrayEquals(Addition.add_matrix(X, Y, 0, 1), new int[][]{{2, 2}, {2, 2}});
+    }
+
+}
+package Addition;
+
+
+public class Addition {
+    //A Matrix is a 2-dimensional array of integer
+    //add_matrix_row: int[] int[] int int -> int[]
+    //Purpose: To add every element from A and B from the vector
+    //interval [low to high].
+    public static int[] add_matrix_row(int[] A, int[] B, int low, int high) {
+        int[] Res = new int[A.length]; //Purpose: Holds the answer for the sum of A and B.
+        int l = low; //Purpose: Index for the elements in A and B that are being added currently.
+
+        //At the beginning, Res contains the no summed elements from A and B.
+        //Invariant: low <= l <= high && Res is computed from [low..l - 1]
+        while (l <= high) {
+            //low <= l <= high && Res is computed from [low..l - 1]
+            Res[l] = A[l] + B[l];
+            //low <= l <= high && Res is computed from [low..l]
+            l++;
+            //low < l <= high && Res is computed from [low..l - 1]
+        }
+        //Termination Invariant: low < high < l ==> l = high + 1 && Res is computed from [low..l - 1]
+        //This implies Res is computed from [low..high].
+        //At the end, Res contains the summed elements from A and B, from [low..high]
+        return Res;
+    }
+
+    //add_matrix: int[][] int[][] int int -> int[][]
+    //Purpose: To add the rows in matrices A and B in the interval low to high.
+    public static int[][] add_matrix(int[][] A, int[][] B, int low, int high) {
+        int[][] Res = new int[A.length][A[0].length]; //Purpose: The resultant matrix.
+        int l = low; //Purpose: The index for which row is being added currently.
+
+        //Invariant: low <= l <= high && Res is computed from [low..l - 1]
+        while (l <= high) {
+            // low <= l <= high && Res is computed from [low..l - 1]
+            Res[l] = add_matrix_row(A[l], B[l], 0, A[l].length - 1);
+            //low <= l <= high && Res is computed from [low..l]
+            l++;
+            //low < l <= high && Res is computed from [low..l - 1]
+        }
+        //Termination invariant: low < high < l so the vector interval is empty,
+        //and l = high + 1.  This implies that Res is computed from [low..high]
+        return Res;
+    }
+    { System.out.println("\\hello\nhow\tare \"you\"?\\\\");}
+}
+ 
+
+
+
+	
+	
