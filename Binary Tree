@@ -1,0 +1,264 @@
+package binarytree;
+
+public class BTString implements BinVisitor<String,String>  {
+
+	
+	public String leafnode(String v) {// Purpose: To return String of one element
+		return v;
+		
+	}
+
+	
+	public String interiornode(String v, String l, String r) {// Purpose: To return left tree right tree and Node
+		return l + " " + r + " " + v;
+	}
+
+}
+
+package binarytree;
+
+public interface IBTreeF<X, Y> {
+	public Y f(X v);
+}
+
+package binarytree;
+
+
+
+	public class interiornode<X> extends Abintree<X>
+	{
+		private bintree<X> l,r;
+		public interiornode(X v, bintree<X> left, bintree<X> right)
+		{
+		val = v;
+		l = left;
+		r = right;
+		}
+		public Boolean isLeaf() { return(false);}
+		public bintree<X> getRightbt() throws Exception
+		{ return(this.r); }
+	public bintree<X> getLeftbt() throws Exception
+	{ return(this.l); }
+	public Boolean equals(bintree<X> t)
+	{ try
+	{ return( !t.isLeaf() &&
+	this.getRootval().equals(t.getRootval()) &&
+	this.getLeftbt().equals(t.getLeftbt()) &&
+	this.getRightbt().equals(t.getRightbt())); }
+	catch(Exception e)
+	{ System.out.println("Error equals in interior node: " + e.getMessage());
+	return(false); } }
+	public String inorderString()
+	{ try
+	{ return(this.getLeftbt().inorderString()+ " " +
+	this.getRootval().toString() + " " +
+	this.getRightbt().inorderString()); }
+	catch(Exception e)
+	{
+	System.out.println("Error inorderString in interiornode:" + e.getMessage());
+	return(null);
+	}}
+
+	public <Y> bintree<Y> btMap(IBTreeF<X,Y> f)
+	{ try
+	{
+	return(new interiornode<Y>(f.f(this.getRootval()),
+	this.getLeftbt().btMap(f), this.getRightbt().btMap(f)));
+	}
+	catch(Exception e)
+	{ System.out.println("Error map in interiornode:" + e.getMessage());
+	return(null);
+	}
+
+	}
+	public <Y> Y visit(BinVisitor<X, Y> v) {
+		//Purpose: To return the Interior Node after visiting the tree.
+	
+		return (v.interiornode(getRootval(), this.l.visit(v),this.r.visit(v)));
+	}
+	
+	}
+
+package binarytree;
+
+public class leafnode<X> extends Abintree<X>
+{ 
+	public leafnode(X v)
+	{val = v;}
+	public Boolean isLeaf() { return(true);}
+	public bintree<X> getRightbt() throws Exception
+	{throw new Exception("getRightbt: A leaf doesnot have a right subtree"); }
+	public bintree<X> getLeftbt() throws Exception
+	{throw new Exception("getLeftbt: A leaf doesnot have a left subtree"); }
+	public Boolean equals(bintree<X> t) { return(t.isLeaf());}
+	public String inorderString() {return(this.getRootval().toString());}
+	public <Y> bintree<Y> btMap(IBTreeF<X,Y> f)
+	{ return(new leafnode<Y>(f.f(this.getRootval()))); }
+	//
+	public <Y> Y visit(BinVisitor<X, Y> v) {
+		//
+		return (v.leafnode(getRootval()));
+	}
+	}
+package binarytree;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class visitortest {
+	BTMax B= new BTMax();
+	BTString S= new BTString();
+	bintree<Integer> L = new leafnode<Integer>(2);
+	bintree<Integer> L2 = new leafnode<Integer>(3);
+	bintree<Integer> L3= new leafnode<Integer>(9);
+	bintree<Integer> R= new leafnode<Integer>(9);
+	bintree<Integer> L1 = new leafnode<Integer>(8);
+	bintree<Integer> R1 = new leafnode<Integer>(3);
+	bintree<Integer> DL = new leafnode<Integer>(4);
+	bintree<Integer> DR = new leafnode<Integer>(6);
+	
+	bintree<Integer> T = new interiornode<Integer>(1,L,R);
+	bintree<Integer> T1 = new interiornode<Integer>(1,L1,R1);
+	bintree<Integer> DT = new interiornode<Integer>(2,DL,DR);
+	bintree<Integer> DT2 = new interiornode<Integer>(2,L1,R1);
+	bintree<Integer> DT3 = new interiornode<Integer>(2,DT2,T);
+	bintree<Integer> DT4 = new interiornode<Integer>(2,DT3,T1);
+	
+	
+	bintree<String> s1= new leafnode<String>("A");
+	bintree<String> s2= new leafnode<String>("B");
+	bintree<String> s3= new leafnode<String>("C");
+	bintree<String> s4= new leafnode<String>("D");
+	bintree<String> s5= new leafnode<String>("E");
+	
+	
+	
+	
+	bintree<String> si1 = new interiornode<String>("Avi",s1,s2);
+	bintree<String> si2 = new interiornode<String>("Vamsi",s2,s3);
+	bintree<String> si3 = new interiornode<String>("Hehe",s4,s5);
+	bintree<String> si4 = new interiornode<String>("Huhu",si1,si2);
+	bintree<String> si5= new interiornode<String>("haha",si3,si4);
+	
+	
+
+	@Test
+	void test() {
+		//Tests for Leaf Nodes for Max Values.
+		assertEquals(L.visit(B).intValue(), 2);
+		assertEquals(L2.visit(B).intValue(),3);
+		assertEquals(L3.visit(B).intValue(),9);
+		assertEquals(R.visit(B).intValue(),9);
+		
+		assertEquals(L1.visit(B).intValue(),8);
+		assertEquals(R1.visit(B).intValue(),3);
+		assertEquals(DL.visit(B).intValue(),4);
+		assertEquals(DR.visit(B).intValue(),6);
+		
+		//Tests for Interior Nodes for Max values
+		
+		assertEquals(T.visit(B).intValue(),9);
+		assertEquals(T1.visit(B).intValue(),8);
+		assertEquals(DT.visit(B).intValue(),6);
+		assertEquals(DT2.visit(B).intValue(),8);
+		assertEquals(DT3.visit(B).intValue(),9);
+		assertEquals(DT4.visit(B).intValue(),9);
+		
+		//Tests for Leaf Nodes for String Values
+		
+		assertEquals(s1.visit(S),"A");
+		assertEquals(s2.visit(S),"B");
+		assertEquals(s3.visit(S),"C");
+		assertEquals(s4.visit(S),"D");
+		assertEquals(s5.visit(S),"E");
+		
+		//Tests for Interior Nodes for String values
+		
+		assertEquals(si1.visit(S),"A B Avi");
+		assertEquals(si2.visit(S),"B C Vamsi");
+		assertEquals(si3.visit(S),"D E Hehe");
+		assertEquals(si4.visit(S),"A B Avi B C Vamsi Huhu");
+		assertEquals(si5.visit(S),"D E Hehe A B Avi B C Vamsi Huhu haha");
+		
+		
+		
+		
+		
+		
+		
+	}
+
+}
+
+package binarytree;
+
+public abstract class Abintree<X> implements bintree<X> {
+
+	
+
+	public X val;
+	
+	
+	public X getRootval() {
+		// TODO Auto-generated method stub
+		return val;
+	}
+}
+
+	
+
+package binarytree;
+
+import org.junit.jupiter.api.Test;
+
+class binarytests {
+
+	@Test
+	void test() {
+		
+		
+	}
+
+}
+
+package binarytree;
+
+
+
+	public interface bintree<X>
+	{
+	public X getRootval();
+	public Boolean isLeaf();
+	public bintree<X> getRightbt() throws Exception;
+	public bintree<X> getLeftbt() throws Exception;
+	public Boolean equals(bintree<X> t);
+	public String inorderString();
+	public <Y> bintree<Y> btMap(IBTreeF<X,Y> f);
+	public <Y> Y visit(BinVisitor<X,Y> v);
+}
+
+package binarytree;
+
+public interface BinVisitor<X, Y> {
+public Y leafnode(X v); // Purpose: To visit Leaf node
+public Y interiornode(X v, Y l, Y r); //Purpose: To visit Interior Node
+}
+
+package binarytree;
+
+public class BTMax implements BinVisitor<Integer,Integer> {
+
+	//
+	public Integer leafnode(Integer v) {// Purpose: To return the max value of leaf node
+		// 
+		return v; 
+	}
+
+	//
+	public Integer interiornode(Integer v, Integer l, Integer r) { // Purpose To return the max value of Interior node
+		// 
+		return Math.max(Math.max(v, l), r);
+
+}
+}
