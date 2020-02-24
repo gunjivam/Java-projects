@@ -1,0 +1,31 @@
+package arrayCode;
+
+public class Array {
+
+}
+package arrayCode;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class ArrayTests {
+
+	@Test
+	public void testSumIntArray()
+	{
+		int[] X= {0,1,2,3,4,5};
+		assertEquals(Array.SumIntArray(X,4,3),0);
+		assertEquals(Array.SumIntArray(X,0,X.length-1),15);
+		assertEquals(Array.SumIntArray(X,2,4),9);
+	}
+	@Test
+	public void testSumIntArrayWhile()
+	{
+		int[] X= {0,1,2,3,4,5};
+		assertEquals(Array.SumIntArrayWhile(X,4,3),0);
+		assertEquals(Array.SumIntArrayWhile(X,0,X.length-1),15);
+		assertEquals(Array.SumIntArrayWhile(X,2,4),9);
+	}
+
+}
