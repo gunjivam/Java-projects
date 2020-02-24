@@ -1,0 +1,20 @@
+package arraysum;
+
+public class array {
+
+}
+
+package arraysum;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class arrayTests {
+
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
+}
