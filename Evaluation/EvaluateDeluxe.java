@@ -66,7 +66,8 @@ public class EvaluateDeluxe {
                 }
             }
         }
-
+        
+        
         // finished parsing string - evaluate operator and operands remaining on two stacks
         while (!ops.isEmpty()) {
             String op = ops.pop();
