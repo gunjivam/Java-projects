@@ -2,9 +2,7 @@ package lab4;
 
 /*
  * Vamsi Avinash Gunji
- * Dr.Puya
- * Intro to Object Oriented Design 1
- * 
+ *
  */
 
 import java.util.Scanner;
