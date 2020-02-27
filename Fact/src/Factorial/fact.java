@@ -1,6 +1,8 @@
 package Factorial;
 import java.util.Scanner;
 
+# This code is calculating factorial using recursion
+
 public class fact 
 {
 	public static int factorial(int a)
